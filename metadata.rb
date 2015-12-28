@@ -1,0 +1,10 @@
+name 'telegraf'
+maintainer 'E Camden Fisher'
+maintainer_email 'camden@northpage.com'
+license 'apache2'
+description 'Installs/Configures telegraf'
+long_description 'Installs/Configures telegraf'
+version '0.1.0'
+
+depends 'yum'
+depends 'apt'
