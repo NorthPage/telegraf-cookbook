@@ -52,9 +52,20 @@ action :create do
   else
     raise "#{install_type} is not a valid install type."
   end
+
+  service "telegraf_#{name}" do
+    service_name 'telegraf'
+    action [:enable, :start]
+  end
 end
 
 action :delete do
-  package 'telegraf'
-  action :delete
+  service "telegraf_#{name}" do
+    service_name 'telegraf'
+    action [:stop, :disable]
+  end
+
+  package 'telegraf' do
+    action :remove
+  end
 end

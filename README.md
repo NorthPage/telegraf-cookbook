@@ -35,7 +35,7 @@ as needed.  Alternatively, you can use the custom resources directly.
 
 #### telegraf_install
 
-Installs telegraf
+Installs telegraf and configures the service
 
 ```ruby
 telegraf_install 'default' do
