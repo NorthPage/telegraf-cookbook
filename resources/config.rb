@@ -19,8 +19,8 @@
 
 property :name, String, name_property: true
 property :config, Hash, default: {}
-property :outputs, Hash
-property :plugins, Hash
+property :outputs, Hash, default: {}
+property :plugins, Hash, default: {}
 property :path, String
 
 default_action :create
@@ -32,8 +32,14 @@ action :create do
 
   require 'toml'
 
+  service "telegraf_#{new_resource.name}" do
+    service_name 'telegraf'
+    action :nothing
+  end
+
   file path do
     content TOML.dump(config)
+    notifies :restart, "service[telegraf_#{new_resource.name}]", :delayed
   end
 
   telegraf_d = ::File.dirname(path) + '/telegraf.d'
@@ -41,14 +47,18 @@ action :create do
   telegraf_outputs name do
     path telegraf_d
     outputs new_resource.outputs
+    reload false
     action :create
-    not_if { new_resource.outputs.nil? }
+    not_if { new_resource.outputs.empty? }
+    notifies :restart, "service[telegraf_#{new_resource.name}]", :delayed
   end
 
   telegraf_plugins name do
     path telegraf_d
     plugins new_resource.plugins
+    reload false
     action :create
-    not_if { new_resource.plugins.nil? }
+    not_if { new_resource.plugins.empty? }
+    notifies :restart, "service[telegraf_#{new_resource.name}]", :delayed
   end
 end

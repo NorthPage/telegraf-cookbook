@@ -20,6 +20,7 @@
 property :name, String, name_property: true
 property :outputs, Hash, required: true
 property :path, String, required: true
+property :reload, kind_of: [TrueClass, FalseClass], default: true
 
 default_action :create
 
@@ -35,7 +36,13 @@ action :create do
 
   require 'toml'
 
+  service "telegraf_#{new_resource.name}" do
+    service_name 'telegraf'
+    action :nothing
+  end
+
   file "#{path}/#{name}_outputs.conf" do
     content TOML.dump(outputs)
+    notifies :restart, "service[telegraf_#{new_resource.name}]", :delayed if reload
   end
 end

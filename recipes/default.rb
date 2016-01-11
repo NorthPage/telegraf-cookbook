@@ -26,7 +26,3 @@ telegraf_config 'default' do
   outputs node['telegraf']['outputs']
   plugins node['telegraf']['plugins']
 end
-
-service 'telegraf' do
-  action [:enable, :start]
-end
