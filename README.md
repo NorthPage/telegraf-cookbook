@@ -4,7 +4,7 @@ Cookbook to install and configure [telegraf](https://github.com/influxdb/telegra
 
 This was influenced by [SimpleFinanace/chef-influxdb](https://github.com/SimpleFinance/chef-influxdb)
 
-*Note:* Some plugins will require other packages be installed and that is out of scope for this 
+*Note:* Some plugins will require other packages be installed and that is out of scope for this
 cookbook.  ie. `[netstat]` requires `lsof`
 
 ## Tested Platforms
@@ -58,7 +58,7 @@ end
 
 #### telegraf_outputs
 
-Writes out telegraf outputs configuration file.
+Writes out telegraf outputs configuration file. You can call this several times to create multiple outputs config files.
 
 ```ruby
 telegraf_outputs 'default' do
@@ -69,16 +69,42 @@ end
 
 #### telegraf_plugins
 
+Writes out telegraf plugins configuration file.
+
 ```ruby
 telegraf_plugins 'default' do
   path node['telegraf']['config_file_path']
-  outputs node['telegraf']['plugins']
+  plugins node['telegraf']['plugins']
 end
 ```
 
+You can call this several times to create multiple plugins config files. You'll need to specify different names for each telegraf_plugins resource, so they'll create separate config files.
+
+For example, to add the nginx plugin:
+
+```ruby
+node.default['telegraf']['nginx'] = {
+  'plugins' => {
+    'nginx' => {
+      'urls' => ['http://localhost/status']
+    }
+  }
+}
+
+telegraf_plugins 'nginx' do
+  path '/etc/opt/telegraf/telegraf.d'
+  plugins node['telegraf']['nginx']
+  service_name 'default'
+  reload true
+end
+```
+
+Note that there are two optional parameters for this resource that could've been left out in this case:
+  - service_name [default: 'default'] if you need to override which service should be restarted when the config changes;
+  - reload [default: true] whether to restart the service when the config changes;
 
 ## License and Authors
-  
+
 ```text
 Copyright (C) 2015 NorthPage
 
@@ -87,7 +113,7 @@ you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
