@@ -19,7 +19,6 @@
 require 'spec_helper'
 
 describe 'telegraf::default' do
-
   platforms = {
     'centos' => ['6.6', '7.0'],
     'ubuntu' => ['14.04']
@@ -27,10 +26,9 @@ describe 'telegraf::default' do
 
   platforms.each do |platform, versions|
     versions.each do |version|
-
       context "on #{platform.capitalize} #{version}" do
-        let (:chef_run) do
-          ChefSpec::SoloRunner.new(log_level: :error, platform: platform, version: version) do |node|
+        let(:chef_run) do
+          ChefSpec::SoloRunner.new(log_level: :error, platform: platform, version: version) do
           end.converge(described_recipe)
         end
 

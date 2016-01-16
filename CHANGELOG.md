@@ -10,3 +10,6 @@
 # 0.1.3
 - Add support for multiple outputs/plugins config files
 
+# 0.1.4
+- Add install_version property to install resource to enforce specific telegraf version
+
