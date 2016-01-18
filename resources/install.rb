@@ -18,6 +18,7 @@
 # limitations under the License.
 
 property :name, String, name_property: true
+property :install_version, String, default: nil
 property :install_type, String, default: 'package'
 
 default_action :create
@@ -31,6 +32,10 @@ action :create do
         baseurl 'https://repos.influxdata.com/centos/\$releasever/\$basearch/stable'
         gpgkey 'https://repos.influxdata.com/influxdb.key'
       end
+
+      # append release to rpm package version until yum_package is fixed:
+      # https://github.com/chef/chef/issues/4103
+      install_version << '-1' unless install_version.nil?
     else
       package 'apt-transport-https'
 
@@ -44,13 +49,13 @@ action :create do
     end
 
     package 'telegraf' do
-      version node['telegraf']['version']
+      version install_version
     end
   when 'tarball'
     # TODO: implement me
-    Chef::log.warn('Sorry, installing from a tarball is not yet implemented.')
+    Chef::Log.warn('Sorry, installing from a tarball is not yet implemented.')
   else
-    raise "#{install_type} is not a valid install type."
+    fail "#{install_type} is not a valid install type."
   end
 
   service "telegraf_#{name}" do

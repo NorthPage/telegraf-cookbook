@@ -35,10 +35,11 @@ as needed.  Alternatively, you can use the custom resources directly.
 
 #### telegraf_install
 
-Installs telegraf and configures the service
+Installs telegraf and configures the service. Optionally specifies a version, otherwise the latest available is installed
 
 ```ruby
 telegraf_install 'default' do
+  install_version '0.2.4'
   action :create
 end
 ```

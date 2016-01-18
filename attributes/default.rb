@@ -17,8 +17,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# By default, always installs the latest by specifying nil
-default['telegraf']['version'] = nil
 default['telegraf']['config_file_path'] = '/etc/opt/telegraf/telegraf.conf'
 default['telegraf']['config'] = {
   'tags' => {},
