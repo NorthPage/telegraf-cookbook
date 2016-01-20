@@ -3,7 +3,7 @@
 # Cookbook Name:: telegraf
 # Resource:: plugins
 #
-# Copyright 2015 NorthPage
+# Copyright 2015-2016 NorthPage
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ action :create do
   end
 
   file "#{path}/#{name}_plugins.conf" do
-    content TOML.dump(plugins)
+    content TOML.dump('plugins' => plugins)
     notifies :restart, "service[telegraf_#{new_resource.service_name}]", :delayed if reload
   end
 end

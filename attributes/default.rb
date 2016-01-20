@@ -3,7 +3,7 @@
 # Cookbook Name:: telegraf
 # Attributes:: default
 #
-# Copyright 2015 NorthPage
+# Copyright 2015-2016 NorthPage
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,27 +27,24 @@ default['telegraf']['config'] = {
     'flush_jitter' => '5s'
   }
 }
-default['telegraf']['outputs'] = {
-  'outputs' => [
-    'influxdb' => {
-      'urls' => ['http://localhost:8086'],
-      'database' => 'telegraf',
-      'precision' => 's'
-    }
-  ]
-}
-default['telegraf']['plugins'] = {
-  'plugins' => {
-    'cpu' => {
-      'percpu' => true,
-      'totalcpu' => true,
-      'drop' => ['cpu_time']
-    },
-    'disk' => {},
-    'io' => {},
-    'mem' => {},
-    'net' => {},
-    'swap' => {},
-    'system' => {}
+default['telegraf']['outputs'] = [
+  'influxdb' => {
+    'urls' => ['http://localhost:8086'],
+    'database' => 'telegraf',
+    'precision' => 's'
   }
+]
+
+default['telegraf']['plugins'] = {
+  'cpu' => {
+    'percpu' => true,
+    'totalcpu' => true,
+    'drop' => ['cpu_time']
+  },
+  'disk' => {},
+  'io' => {},
+  'mem' => {},
+  'net' => {},
+  'swap' => {},
+  'system' => {}
 }

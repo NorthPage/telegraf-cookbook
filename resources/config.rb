@@ -3,7 +3,7 @@
 # Cookbook Name:: telegraf
 # Resource:: config
 #
-# Copyright 2015 NorthPage
+# Copyright 2015-2016 NorthPage
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 
 property :name, String, name_property: true
 property :config, Hash, default: {}
-property :outputs, Hash, default: {}
+property :outputs, Array, default: {}
 property :plugins, Hash, default: {}
 property :path, String, default: node['telegraf']['config_file_path']
 

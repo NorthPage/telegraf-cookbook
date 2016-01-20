@@ -3,7 +3,7 @@
 # Cookbook Name:: telegraf
 # Resource:: outputs
 #
-# Copyright 2015 NorthPage
+# Copyright 2015-2016 NorthPage
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 # limitations under the License.
 
 property :name, String, name_property: true
-property :outputs, Hash, required: true
+property :outputs, Array, required: true
 property :path, String,
          default: ::File.dirname(node['telegraf']['config_file_path']) + '/telegraf.d'
 property :service_name, String, default: 'default'
@@ -44,7 +44,7 @@ action :create do
   end
 
   file "#{path}/#{name}_outputs.conf" do
-    content TOML.dump(outputs)
+    content TOML.dump('outputs' => outputs)
     notifies :restart, "service[telegraf_#{new_resource.service_name}]", :delayed if reload
   end
 end

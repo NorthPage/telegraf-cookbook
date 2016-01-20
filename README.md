@@ -28,8 +28,8 @@ as needed.  Alternatively, you can use the custom resources directly.
 | node['telegraf']['version']          | String | Version of telegraf to install, nil = latest          | nil                                                                                                                                                                 |
 | node['telegraf']['config_file_path'] | String | Location of the telgraf main config file              | '/etc/opt/telegraf/telegraf.conf'                                                                                                                                   |
 | node['telegraf']['config']           | Hash   | Config variables to be written to the telegraf config | {'tags' => {},'agent' => {'interval' => '10s','round_interval' => true,'flush_interval' => '10s','flush_jitter' => '5s'}                                            |
-| node['telegraf']['outputs']          | Hash   | telegraf outputs                                      | {'outputs' => ['influxdb' => {'urls' => ['http://localhost:8086'],'database' => 'telegraf','precision' => 's'}]}                                                    |
-| node['telegraf']['plugins']          | Hash   | telegraf plugins                                      | {'plugins' => {'cpu' => {'percpu' => true,'totalcpu' => true,'drop' => ['cpu_time'],},'disk' => {},'io' => {},'mem' => {},'net' => {},'swap' => {},'system' => {}}} |
+| node['telegraf']['outputs']          | Array  | telegraf outputs                                      | ['influxdb' => {'urls' => ['http://localhost:8086'],'database' => 'telegraf','precision' => 's'}]                                                                   |
+| node['telegraf']['plugins']          | Hash   | telegraf plugins                                      | {'cpu' => {'percpu' => true,'totalcpu' => true,'drop' => ['cpu_time'],},'disk' => {},'io' => {},'mem' => {},'net' => {},'swap' => {},'system' => {}}                |
 
 ### Custom Resources
 
@@ -85,10 +85,8 @@ For example, to add the nginx plugin:
 
 ```ruby
 node.default['telegraf']['nginx'] = {
-  'plugins' => {
-    'nginx' => {
-      'urls' => ['http://localhost/status']
-    }
+  'nginx' => {
+    'urls' => ['http://localhost/status']
   }
 }
 
@@ -107,7 +105,7 @@ Note that there are two optional parameters for this resource that could've been
 ## License and Authors
 
 ```text
-Copyright (C) 2015 NorthPage
+Copyright (C) 2015-2016 NorthPage
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
