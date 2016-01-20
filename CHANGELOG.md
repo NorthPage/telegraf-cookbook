@@ -13,3 +13,5 @@
 # 0.1.4
 - Add install_version property to install resource to enforce specific telegraf version
 
+# 0.1.5
+- Add sane defaults for plugins/outputs path
