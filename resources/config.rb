@@ -21,7 +21,7 @@ property :name, String, name_property: true
 property :config, Hash, default: {}
 property :outputs, Hash, default: {}
 property :plugins, Hash, default: {}
-property :path, String
+property :path, String, default: node['telegraf']['config_file_path']
 
 default_action :create
 

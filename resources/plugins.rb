@@ -19,7 +19,8 @@
 
 property :name, String, name_property: true
 property :plugins, Hash, required: true
-property :path, String, required: true
+property :path, String,
+         default: ::File.dirname(node['telegraf']['config_file_path']) + '/telegraf.d'
 property :service_name, String, default: 'default'
 property :reload, kind_of: [TrueClass, FalseClass], default: true
 
