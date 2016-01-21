@@ -28,4 +28,12 @@ if defined?(ChefSpec)
   def create_telegraf_config(name)
     ChefSpec::Matchers::ResourceMatcher.new(:telegraf_config, :create, name)
   end
+
+  def create_telegraf_outputs(name)
+    ChefSpec::Matchers::ResourceMatcher.new(:telegraf_outputs, :create, name)
+  end
+
+  def create_telegraf_plugins(name)
+    ChefSpec::Matchers::ResourceMatcher.new(:telegraf_plugins, :create, name)
+  end
 end
