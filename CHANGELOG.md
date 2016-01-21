@@ -15,3 +15,6 @@
 
 # 0.1.5
 - Add sane defaults for plugins/outputs path
+
+# 0.2.0
+- Change format for output/plugins to not require a top level name
