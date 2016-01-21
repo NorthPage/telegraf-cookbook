@@ -18,3 +18,5 @@
 
 # 0.2.0
 - Change format for output/plugins to not require a top level name
+
+# 0.2.1 [unreleased]
