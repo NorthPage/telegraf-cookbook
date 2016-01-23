@@ -27,6 +27,9 @@ default['telegraf']['config'] = {
     'flush_jitter' => '5s'
   }
 }
+
+default['telegraf']['include_repository'] = true
+
 default['telegraf']['outputs'] = [
   'influxdb' => {
     'urls' => ['http://localhost:8086'],

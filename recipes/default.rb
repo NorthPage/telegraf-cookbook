@@ -17,6 +17,7 @@
 # limitations under the License.
 
 telegraf_install 'default' do
+  include_repository node['telegraf']['include_repository']
   install_version '0.2.4'
   action :create
 end

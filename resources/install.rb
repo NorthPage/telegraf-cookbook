@@ -17,6 +17,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+property :include_repository, [TrueClass, FalseClass], default: true
 property :name, String, name_property: true
 property :install_version, String, default: nil
 property :install_type, String, default: 'package'
@@ -31,13 +32,16 @@ action :create do
         description 'InfluxDB Repository - RHEL \$releasever'
         baseurl 'https://repos.influxdata.com/centos/\$releasever/\$basearch/stable'
         gpgkey 'https://repos.influxdata.com/influxdb.key'
+        only_if { include_repository }
       end
 
       # append release to rpm package version until yum_package is fixed:
       # https://github.com/chef/chef/issues/4103
       install_version << '-1' unless install_version.nil?
     else
-      package 'apt-transport-https'
+      package 'apt-transport-https' do
+        only_if { include_repository }
+      end
 
       apt_repository 'influxdb' do
         uri "https://repos.influxdata.com/#{node['platform']}"
@@ -45,6 +49,7 @@ action :create do
         components ['stable']
         arch 'amd64'
         key 'https://repos.influxdata.com/influxdb.key'
+        only_if { include_repository }
       end
     end
 
