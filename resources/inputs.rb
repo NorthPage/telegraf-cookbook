@@ -1,7 +1,7 @@
 # resources/plugins.rb
 #
 # Cookbook Name:: telegraf
-# Resource:: plugins
+# Resource:: inputs
 #
 # Copyright 2015-2016 NorthPage
 #
@@ -18,7 +18,7 @@
 # limitations under the License.
 
 property :name, String, name_property: true
-property :plugins, Hash, required: true
+property :inputs, Hash, required: true
 property :path, String,
          default: ::File.dirname(node['telegraf']['config_file_path']) + '/telegraf.d'
 property :service_name, String, default: 'default'
@@ -43,8 +43,8 @@ action :create do
     action :nothing
   end
 
-  file "#{path}/#{name}_plugins.conf" do
-    content TOML.dump('plugins' => plugins)
+  file "#{path}/#{name}_inputs.conf" do
+    content TOML.dump('inputs' => inputs)
     notifies :restart, "service[telegraf_#{new_resource.service_name}]", :delayed if reload
   end
 end

@@ -1,19 +1,19 @@
 require 'spec_helper'
 
 package_name = 'telegraf'
-conf_dir = '/etc/opt/telegraf'
+conf_dir = '/etc/telegraf'
 
 describe package(package_name) do
   it { should be_installed }
 end
 
-%w( /etc/opt/telegraf /etc/opt/telegraf/telegraf.d ).each do |d|
+%w( /etc/telegraf /etc/telegraf/telegraf.d ).each do |d|
   describe file(d) do
     it { should be_directory }
   end
 end
 
-%w( telegraf.conf telegraf.d/default_outputs.conf telegraf.d/default_plugins.conf ).each do |c|
+%w( telegraf.conf telegraf.d/default_outputs.conf telegraf.d/default_inputs.conf ).each do |c|
   describe file("#{conf_dir}/#{c}") do
     it { should be_file }
   end

@@ -34,10 +34,6 @@ action :create do
         gpgkey 'https://repos.influxdata.com/influxdb.key'
         only_if { include_repository }
       end
-
-      # append release to rpm package version until yum_package is fixed:
-      # https://github.com/chef/chef/issues/4103
-      install_version << '-1' unless install_version.nil?
     else
       package 'apt-transport-https' do
         only_if { include_repository }
@@ -46,7 +42,7 @@ action :create do
       apt_repository 'influxdb' do
         uri "https://repos.influxdata.com/#{node['platform']}"
         distribution node['lsb']['codename']
-        components ['stable']
+        components ['stable', 'unstable']
         arch 'amd64'
         key 'https://repos.influxdata.com/influxdb.key'
         only_if { include_repository }

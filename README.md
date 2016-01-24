@@ -4,7 +4,7 @@ Cookbook to install and configure [telegraf](https://github.com/influxdb/telegra
 
 This was influenced by [SimpleFinanace/chef-influxdb](https://github.com/SimpleFinance/chef-influxdb)
 
-*Note:* Some plugins will require other packages be installed and that is out of scope for this
+*Note:* Some inputs will require other packages be installed and that is out of scope for this
 cookbook.  ie. `[netstat]` requires `lsof`
 
 ## Tested Platforms
@@ -25,12 +25,12 @@ as needed.  Alternatively, you can use the custom resources directly.
 
 | Key                                  | Type   | Description                                           | Default                                                                                                                                                             |
 |--------------------------------------|--------|-------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| node['telegraf']['version']          | String | Version of telegraf to install, nil = latest          | nil                                                                                                                                                                 |
-| node['telegraf']['config_file_path'] | String | Location of the telgraf main config file              | '/etc/opt/telegraf/telegraf.conf'                                                                                                                                   |
+| node['telegraf']['version']          | String | Version of telegraf to install, nil = latest          | '0.10.0-1'                                                                                                                                                          |
+| node['telegraf']['config_file_path'] | String | Location of the telgraf main config file              | '/etc/telegraf/telegraf.conf'                                                                                                                                       |
 | node['telegraf']['config']           | Hash   | Config variables to be written to the telegraf config | {'tags' => {},'agent' => {'interval' => '10s','round_interval' => true,'flush_interval' => '10s','flush_jitter' => '5s'}                                            |
 | node['telegraf']['outputs']          | Array  | telegraf outputs                                      | ['influxdb' => {'urls' => ['http://localhost:8086'],'database' => 'telegraf','precision' => 's'}]                                                                   |
-| node['telegraf']['plugins']          | Hash   | telegraf plugins                                      | {'cpu' => {'percpu' => true,'totalcpu' => true,'drop' => ['cpu_time'],},'disk' => {},'io' => {},'mem' => {},'net' => {},'swap' => {},'system' => {}}                |
 | node['telegraf']['include_repository'] | [TrueClass, FalseClass] | Whether or not to pull in the InfluxDB repository to install from. | true |
+| node['telegraf']['inputs']           | Hash   | telegraf inputs                                       | {'cpu' => {'percpu' => true,'totalcpu' => true,'drop' => ['cpu_time'],},'disk' => {},'io' => {},'mem' => {},'net' => {},'swap' => {},'system' => {}}                |
 
 ### Custom Resources
 
@@ -40,21 +40,21 @@ Installs telegraf and configures the service. Optionally specifies a version, ot
 
 ```ruby
 telegraf_install 'default' do
-  install_version '0.2.4'
+  install_version '0.10.0-1'
   action :create
 end
 ```
 
 #### telegraf_config
 
-Writes out the telegraf configuration file.  Optionally includes outputs and plugins.
+Writes out the telegraf configuration file.  Optionally includes outputs and inputs.
 
 ```ruby
 telegraf_config 'default' do
   path node['telegraf']['config_file_path']
   config node['telegraf']['config']
   outputs node['telegraf']['outputs']
-  plugins node['telegraf']['plugins']
+  inputs node['telegraf']['inputs']
 end
 ```
 
@@ -64,25 +64,23 @@ Writes out telegraf outputs configuration file. You can call this several times 
 
 ```ruby
 telegraf_outputs 'default' do
-  path node['telegraf']['config_file_path']
   outputs node['telegraf']['outputs']
 end
 ```
 
-#### telegraf_plugins
+#### telegraf_inputs
 
-Writes out telegraf plugins configuration file.
+Writes out telegraf inputs configuration file.
 
 ```ruby
-telegraf_plugins 'default' do
-  path node['telegraf']['config_file_path']
-  plugins node['telegraf']['plugins']
+telegraf_inputs 'default' do
+  inputs node['telegraf']['inputs']
 end
 ```
 
-You can call this several times to create multiple plugins config files. You'll need to specify different names for each telegraf_plugins resource, so they'll create separate config files.
+You can call this several times to create multiple inputs config files. You'll need to specify different names for each telegraf_inputs resource, so they'll create separate config files.
 
-For example, to add the nginx plugin:
+For example, to add the nginx input:
 
 ```ruby
 node.default['telegraf']['nginx'] = {
@@ -91,9 +89,8 @@ node.default['telegraf']['nginx'] = {
   }
 }
 
-telegraf_plugins 'nginx' do
-  path '/etc/opt/telegraf/telegraf.d'
-  plugins node['telegraf']['nginx']
+telegraf_inputs 'nginx' do
+  inputs node['telegraf']['nginx']
   service_name 'default'
   reload true
 end

@@ -18,7 +18,7 @@
 
 telegraf_install 'default' do
   include_repository node['telegraf']['include_repository']
-  install_version '0.2.4'
+  install_version node['telegraf']['version']
   action :create
 end
 
@@ -26,5 +26,5 @@ telegraf_config 'default' do
   path node['telegraf']['config_file_path']
   config node['telegraf']['config']
   outputs node['telegraf']['outputs']
-  plugins node['telegraf']['plugins']
+  inputs node['telegraf']['inputs']
 end

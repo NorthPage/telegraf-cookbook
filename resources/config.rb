@@ -20,7 +20,7 @@
 property :name, String, name_property: true
 property :config, Hash, default: {}
 property :outputs, Array, default: {}
-property :plugins, Hash, default: {}
+property :inputs, Hash, default: {}
 property :path, String, default: node['telegraf']['config_file_path']
 
 default_action :create
@@ -53,12 +53,12 @@ action :create do
     notifies :restart, "service[telegraf_#{new_resource.name}]", :delayed
   end
 
-  telegraf_plugins name do
+  telegraf_inputs name do
     path telegraf_d
-    plugins new_resource.plugins
+    inputs new_resource.inputs
     reload false
     action :create
-    not_if { new_resource.plugins.empty? }
+    not_if { new_resource.inputs.empty? }
     notifies :restart, "service[telegraf_#{new_resource.name}]", :delayed
   end
 end

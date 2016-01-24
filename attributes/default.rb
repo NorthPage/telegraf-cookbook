@@ -17,7 +17,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['telegraf']['config_file_path'] = '/etc/opt/telegraf/telegraf.conf'
+# version of telegraf to install, e.g. '0.10.0-1' or nil for the latest
+default['telegraf']['version'] = '0.10.0-1'
+default['telegraf']['config_file_path'] = '/etc/telegraf/telegraf.conf'
 default['telegraf']['config'] = {
   'tags' => {},
   'agent' => {
@@ -37,8 +39,7 @@ default['telegraf']['outputs'] = [
     'precision' => 's'
   }
 ]
-
-default['telegraf']['plugins'] = {
+default['telegraf']['inputs'] = {
   'cpu' => {
     'percpu' => true,
     'totalcpu' => true,
