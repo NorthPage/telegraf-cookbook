@@ -22,4 +22,7 @@
 # 0.2.1
 - Update matchers for chefspec testing
 
-# 0.2.2 [unreleased]
+# 0.2.2
+- Merge #12 Allow specifying whether or not to bring in external repository (don-code)
+
+# 0.2.3 [unreleased]
