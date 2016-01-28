@@ -25,5 +25,8 @@
 # 0.2.2
 - Merge #12 Allow specifying whether or not to bring in external repository (don-code)
 
-# 0.2.3 [unreleased]
+# 0.2.3
 - Add LICENSE file
+
+# 0.3.0
+- Add initial support for telegraf 0.10.x
