@@ -30,3 +30,6 @@
 
 # 0.3.0
 - Add initial support for telegraf 0.10.x
+
+# 0.3.1
+- Default to telegraf 0.10.1
