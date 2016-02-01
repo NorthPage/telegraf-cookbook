@@ -33,3 +33,6 @@
 
 # 0.3.1
 - Default to telegraf 0.10.1
+
+# 0.3.2
+- Bugfix telegraf_inputs chefspec matcher

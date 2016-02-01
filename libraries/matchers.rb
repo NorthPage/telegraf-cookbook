@@ -33,7 +33,7 @@ if defined?(ChefSpec)
     ChefSpec::Matchers::ResourceMatcher.new(:telegraf_outputs, :create, name)
   end
 
-  def create_telegraf_plugins(name)
-    ChefSpec::Matchers::ResourceMatcher.new(:telegraf_plugins, :create, name)
+  def create_telegraf_inputs(name)
+    ChefSpec::Matchers::ResourceMatcher.new(:telegraf_inputs, :create, name)
   end
 end
