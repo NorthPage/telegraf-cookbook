@@ -9,8 +9,9 @@ cookbook.  ie. `[netstat]` requires `lsof`
 
 ## Tested Platforms
 
-* CentOS 7.1
-* Ubuntu 14.04
+* CentOS 6.6 and 7.1
+* Ubuntu 14.04 and 15.04
+* Amazon Linux 
 
 ## Requirements
 
