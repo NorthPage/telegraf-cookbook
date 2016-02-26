@@ -19,7 +19,7 @@
 
 property :include_repository, [TrueClass, FalseClass], default: true
 property :name, String, name_property: true
-property :install_version, String, default: nil
+property :install_version, [String, nil], default: nil
 property :install_type, String, default: 'package'
 
 default_action :create
@@ -63,7 +63,7 @@ action :create do
     # TODO: implement me
     Chef::Log.warn('Sorry, installing from a tarball is not yet implemented.')
   else
-    fail "#{install_type} is not a valid install type."
+    raise "#{install_type} is not a valid install type."
   end
 
   service "telegraf_#{name}" do
