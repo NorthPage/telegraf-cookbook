@@ -30,7 +30,14 @@ action :create do
     if platform_family? 'rhel'
       yum_repository 'telegraf' do
         description 'InfluxDB Repository - RHEL \$releasever'
-        baseurl 'https://repos.influxdata.com/centos/\$releasever/\$basearch/stable'
+        case node['platform']
+        when 'redhat'
+          baseurl 'https://repos.influxdata.com/rhel/\$releasever/\$basearch/stable'
+        when 'amazon'
+          baseurl 'https://repos.influxdata.com/centos/7/\$basearch/stable'
+        else
+          baseurl 'https://repos.influxdata.com/centos/\$releasever/\$basearch/stable'
+        end
         gpgkey 'https://repos.influxdata.com/influxdb.key'
         only_if { include_repository }
       end
