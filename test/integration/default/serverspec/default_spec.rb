@@ -16,6 +16,9 @@ end
 %w( telegraf.conf telegraf.d/default_outputs.conf telegraf.d/default_inputs.conf ).each do |c|
   describe file("#{conf_dir}/#{c}") do
     it { should be_file }
+    it { should be_owned_by 'root' }
+    it { should be_grouped_into 'telegraf' }
+    it { should be_mode '644' }
   end
 end
 

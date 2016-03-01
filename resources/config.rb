@@ -19,7 +19,7 @@
 
 property :name, String, name_property: true
 property :config, Hash, default: {}
-property :outputs, Array, default: {}
+property :outputs, Array, default: []
 property :inputs, Hash, default: {}
 property :path, String, default: node['telegraf']['config_file_path']
 
@@ -39,6 +39,9 @@ action :create do
 
   file path do
     content TOML.dump(config)
+    user 'root'
+    group 'telegraf'
+    mode '0644'
     notifies :restart, "service[telegraf_#{new_resource.name}]", :delayed
   end
 
