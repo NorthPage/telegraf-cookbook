@@ -39,3 +39,7 @@
 
 # 0.3.3
 - Default to telegraf 0.10.2
+
+# 0.3.4
+- PR#16 - fix installation on Amazon Linux; add tests for ubuntu 15.04 and amazon linux
+- PR#19 - enforce permissions on config files, optionally suppress logging file updates

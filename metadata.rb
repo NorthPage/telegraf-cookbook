@@ -4,7 +4,7 @@ maintainer_email 'camden@northpage.com'
 license 'apache2'
 description 'Installs/Configures telegraf'
 long_description 'Installs/Configures telegraf'
-version '0.3.3'
+version '0.3.4'
 source_url 'https://github.com/NorthPage/telegraf-cookbook'
 
 depends 'yum'
