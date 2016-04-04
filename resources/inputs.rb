@@ -34,7 +34,9 @@ action :create do
   end
 
   chef_gem 'toml-rb' do
+    version '0.3.12'
     compile_time true if respond_to?(:compile_time)
+    action [:install, :upgrade]
   end
 
   require 'toml'
