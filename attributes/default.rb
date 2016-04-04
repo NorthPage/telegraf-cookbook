@@ -32,13 +32,13 @@ default['telegraf']['config'] = {
 
 default['telegraf']['include_repository'] = true
 
-default['telegraf']['outputs'] = [
-  'influxdb' => {
+default['telegraf']['outputs'] = {
+  'influxdb' => [{
     'urls' => ['http://localhost:8086'],
     'database' => 'telegraf',
     'precision' => 's'
-  }
-]
+  }]
+}
 default['telegraf']['inputs'] = {
   'cpu' => {
     'percpu' => true,

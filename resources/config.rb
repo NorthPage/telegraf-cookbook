@@ -19,7 +19,7 @@
 
 property :name, String, name_property: true
 property :config, Hash, default: {}
-property :outputs, Array, default: []
+property :outputs, Hash, default: {}
 property :inputs, Hash, default: {}
 property :path, String, default: node['telegraf']['config_file_path']
 
