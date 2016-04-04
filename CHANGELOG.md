@@ -46,3 +46,7 @@
 
 # 0.3.5
 - Pin toml-rb to v0.3.12
+
+# 0.4.0 [unreleased]
+- Pin toml-rb to '~> 0.3.0'
+- Upgrade to telegraf 0.11.1
