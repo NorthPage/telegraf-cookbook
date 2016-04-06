@@ -27,9 +27,8 @@ default_action :create
 
 action :create do
   chef_gem 'toml-rb' do
-    version '0.3.12'
+    version '~> 0.3.0'
     compile_time true if respond_to?(:compile_time)
-    action [:install, :upgrade]
   end
 
   require 'toml'
