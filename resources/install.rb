@@ -49,7 +49,7 @@ action :create do
       apt_repository 'influxdb' do
         uri "https://repos.influxdata.com/#{node['platform']}"
         distribution node['lsb']['codename']
-        components ['stable', 'unstable']
+        components ['stable']
         arch 'amd64'
         key 'https://repos.influxdata.com/influxdb.key'
         only_if { include_repository }
