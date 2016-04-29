@@ -35,6 +35,8 @@ action :create do
 
   service "telegraf_#{new_resource.name}" do
     service_name 'telegraf'
+    retries 2
+    retry_delay 5
     action :nothing
   end
 
