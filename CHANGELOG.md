@@ -47,6 +47,8 @@
 # 0.3.5
 - Pin toml-rb to v0.3.12
 
-# 0.4.0 [unreleased]
+# 0.4.0
+- PR#21 - Fix incorrect config if 'toml-rb' > 0.3.12
+- PR#27 - Default to latest telegraf; only use stable apt repo
+- PR#30 - Add service restart retries
 - Pin toml-rb to '~> 0.3.0'
-- Upgrade to telegraf 0.11.1
