@@ -27,6 +27,8 @@ default_action :create
 
 action :create do
   chef_gem 'toml-rb' do
+    source node['telegraf']['rubysource']
+    clear_sources true
     version '~> 0.3.0'
     compile_time true if respond_to?(:compile_time)
   end

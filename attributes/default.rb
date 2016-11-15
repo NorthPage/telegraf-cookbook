@@ -19,6 +19,7 @@
 
 # version of telegraf to install, e.g. '0.10.0-1' or nil for the latest
 default['telegraf']['version'] = nil
+default['telegraf']['rubysource'] = 'https://rubygems.org'
 default['telegraf']['config_file_path'] = '/etc/telegraf/telegraf.conf'
 default['telegraf']['config'] = {
   'tags' => {},
