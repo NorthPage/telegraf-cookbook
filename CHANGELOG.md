@@ -52,3 +52,6 @@
 - PR#27 - Default to latest telegraf; only use stable apt repo
 - PR#30 - Add service restart retries
 - Pin toml-rb to '~> 0.3.0'
+
+# 0.4.1
+- PR#34 - Allow specifying gem source for toml-rb
