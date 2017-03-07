@@ -94,14 +94,14 @@ telegraf_inputs 'nginx' do
   inputs node['telegraf']['nginx']
   service_name 'default'
   reload true
-  sensitive false
+  rootonly false
 end
 ```
 
 Note that there are three optional parameters for this resource that could've been left out in this case:
   - service_name [default: 'default'] if you need to override which service should be restarted when the config changes;
   - reload [default: true] whether to restart the service when the config changes;
-  - sensitive [default: false] whether to restrict access to the config file so it's not world readable;
+  - rootonly [default: false] whether to restrict access to the config file so it's not world readable;
 
 ## License and Authors
 

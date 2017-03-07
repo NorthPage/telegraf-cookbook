@@ -55,3 +55,6 @@
 
 # 0.4.1
 - PR#34 - Allow specifying gem source for toml-rb
+
+## Unreleased
+- Rename sensitive resource to rootonly as it will raise an exception in Chef13
