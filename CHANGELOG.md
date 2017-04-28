@@ -58,3 +58,4 @@
 
 ## Unreleased
 - Rename sensitive resource to rootonly as it will raise an exception in Chef13
+- PR#37 - Add delete action to input/output LWRPs
