@@ -19,6 +19,7 @@
 telegraf_install 'default' do
   include_repository node['telegraf']['include_repository']
   install_version node['telegraf']['version']
+  install_type node['telegraf']['install_type']
   action :create
 end
 

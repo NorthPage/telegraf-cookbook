@@ -19,8 +19,22 @@
 
 # version of telegraf to install, e.g. '0.10.0-1' or nil for the latest
 default['telegraf']['version'] = nil
+default['telegraf']['install_type'] = 'package'
 default['telegraf']['rubysource'] = 'https://rubygems.org'
+
+default['telegraf']['download_urls'] = {
+  'debian' => 'https://dl.influxdata.com/telegraf/releases',
+  'rhel' => 'https://dl.influxdata.com/telegraf/releases'
+}
+
+# platform_family keyed download sha256 checksums
+default['telegraf']['shasums'] = {
+  'debian' => '',
+  'rhel' => ''
+}
+
 default['telegraf']['config_file_path'] = '/etc/telegraf/telegraf.conf'
+
 default['telegraf']['config'] = {
   'tags' => {},
   'agent' => {

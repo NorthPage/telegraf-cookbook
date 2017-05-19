@@ -41,7 +41,7 @@ action :create do
         gpgkey 'https://repos.influxdata.com/influxdb.key'
         only_if { include_repository }
       end
-    else
+    elsif node.platform_family? 'debian'
       package 'apt-transport-https' do
         only_if { include_repository }
       end
@@ -54,6 +54,8 @@ action :create do
         key 'https://repos.influxdata.com/influxdb.key'
         only_if { include_repository }
       end
+    else    
+      raise "I do not support your platform: #{node['platform_family']}"
     end
 
     package 'telegraf' do
@@ -62,6 +64,37 @@ action :create do
   when 'tarball'
     # TODO: implement me
     Chef::Log.warn('Sorry, installing from a tarball is not yet implemented.')
+  
+  when 'file'
+    if node.platform_family? 'rhel'
+      file_name = "telegraf-#{install_version}.x86_64.rpm"
+      remote_file "#{Chef::Config[:file_cache_path]}/#{file_name}" do
+        source "#{node['telegraf']['download_urls']['rhel']}/#{file_name}"
+        checksum node['telegraf']['shasums']['rhel']
+        action :create
+      end
+
+      rpm_package 'telegraf' do
+        source "#{Chef::Config[:file_cache_path]}/#{file_name}"
+        action :install
+      end
+    elsif node.platform_family? 'debian'
+      # NOTE: file_name would be influxdb_<version> instead.
+      file_name = "telegraf_#{install_version}_amd64.deb"
+      remote_file "#{Chef::Config[:file_cache_path]}/#{file_name}" do
+        source "#{node['telegraf']['download_urls']['debian']}/#{file_name}"
+        checksum node['telegraf']['shasums']['debian']
+        action :create
+      end
+
+      dpkg_package 'telegraf' do
+        source "#{Chef::Config[:file_cache_path]}/#{file_name}"
+        options '--force-confdef --force-confold'
+        action :install
+      end
+    else
+      raise "I do not support your platform: #{node['platform_family']}"
+    end
   else
     raise "#{install_type} is not a valid install type."
   end
