@@ -9,8 +9,8 @@ cookbook.  ie. `[netstat]` requires `lsof`
 
 ## Tested Platforms
 
-* CentOS 6.6 and 7.1
-* Ubuntu 14.04 and 15.04
+* CentOS 6.8 and 7.3
+* Ubuntu 15.04 and 16.04
 * Amazon Linux 
 
 ## Requirements
@@ -106,7 +106,7 @@ Note that there are three optional parameters for this resource that could've be
 ## License and Authors
 
 ```text
-Copyright (C) 2015-2016 NorthPage
+Copyright (C) 2015-2017 NorthPage
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

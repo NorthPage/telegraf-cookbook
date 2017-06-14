@@ -56,6 +56,10 @@
 # 0.4.1
 - PR#34 - Allow specifying gem source for toml-rb
 
-## Unreleased
+# 0.5.0
 - Rename sensitive resource to rootonly as it will raise an exception in Chef13
 - PR#37 - Add delete action to input/output LWRPs
+- PR#40 - Add support for install_type=file
+- PR#43 - Switch from toml-rb to toml gem
+
+# Unreleased
