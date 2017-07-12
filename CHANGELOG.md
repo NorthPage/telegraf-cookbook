@@ -62,4 +62,8 @@
 - PR#40 - Add support for install_type=file
 - PR#43 - Switch from toml-rb to toml gem
 
+# 0.6.0
+- PR#44 - Add tests for input file
+- PR#47 - Change back to toml-rb gem
+
 # Unreleased

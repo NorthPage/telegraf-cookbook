@@ -3,7 +3,7 @@
 # Cookbook Name:: telegraf
 # Resource:: config
 #
-# Copyright 2015-2016 NorthPage
+# Copyright 2015-2017 NorthPage
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ property :path, String, default: node['telegraf']['config_file_path']
 
 default_action :create
 
+# rubocop:disable Metrics/BlockLength
 action :create do
   chef_gem 'toml-rb' do
     source node['telegraf']['rubysource']
@@ -70,3 +71,4 @@ action :create do
     notifies :restart, "service[telegraf_#{new_resource.name}]", :delayed
   end
 end
+# rubocop:enable Metrics/BlockLength

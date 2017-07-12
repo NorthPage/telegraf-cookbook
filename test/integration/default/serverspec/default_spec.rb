@@ -7,13 +7,13 @@ describe package(package_name) do
   it { should be_installed }
 end
 
-%w( /etc/telegraf /etc/telegraf/telegraf.d ).each do |d|
+%w(/etc/telegraf /etc/telegraf/telegraf.d).each do |d|
   describe file(d) do
     it { should be_directory }
   end
 end
 
-%w( telegraf.conf telegraf.d/default_outputs.conf ).each do |c|
+%w(telegraf.conf telegraf.d/default_outputs.conf).each do |c|
   describe file("#{conf_dir}/#{c}") do
     it { should be_file }
     it { should be_owned_by 'root' }

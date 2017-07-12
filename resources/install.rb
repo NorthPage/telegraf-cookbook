@@ -3,7 +3,7 @@
 # Cookbook Name:: telegraf
 # Resource:: install
 #
-# Copyright 2015-2016 NorthPage
+# Copyright 2015-2017 NorthPage
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ property :install_type, String, default: 'package'
 
 default_action :create
 
+# rubocop:disable Metrics/BlockLength
 action :create do
   case install_type
   when 'package'
@@ -54,7 +55,7 @@ action :create do
         key 'https://repos.influxdata.com/influxdb.key'
         only_if { include_repository }
       end
-    else    
+    else
       raise "I do not support your platform: #{node['platform_family']}"
     end
 
@@ -64,7 +65,6 @@ action :create do
   when 'tarball'
     # TODO: implement me
     Chef::Log.warn('Sorry, installing from a tarball is not yet implemented.')
-  
   when 'file'
     if node.platform_family? 'rhel'
       file_name = "telegraf-#{install_version}.x86_64.rpm"
@@ -115,3 +115,4 @@ action :delete do
     action :remove
   end
 end
+# rubocop:enable Metrics/BlockLength
