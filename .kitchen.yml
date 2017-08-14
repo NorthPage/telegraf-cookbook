@@ -26,3 +26,9 @@ suites:
     run_list:
       - recipe[telegraf::default]
     attributes:
+      telegraf:
+        outputs:
+          influxdb:
+            urls: ['http://localhost:8086']
+            database: 'telegraf'
+            precision: 's'
