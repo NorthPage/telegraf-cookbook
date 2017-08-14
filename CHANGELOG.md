@@ -66,4 +66,5 @@
 - PR#44 - Add tests for input file
 - PR#47 - Change back to toml-rb gem
 
-# Unreleased
+# 0.7.0
+- PR#48 - Removing default influxDB output
