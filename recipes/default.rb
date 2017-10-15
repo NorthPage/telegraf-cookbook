@@ -27,5 +27,6 @@ telegraf_config 'default' do
   path node['telegraf']['config_file_path']
   config node['telegraf']['config']
   outputs node['telegraf']['outputs']
+  perf_counters node['telegraf']['perf_counters']
   inputs node['telegraf']['inputs']
 end

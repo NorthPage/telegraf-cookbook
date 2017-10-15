@@ -36,4 +36,8 @@ if defined?(ChefSpec)
   def create_telegraf_inputs(name)
     ChefSpec::Matchers::ResourceMatcher.new(:telegraf_inputs, :create, name)
   end
+
+  def create_telegraf_perf_counters(name)
+    ChefSpec::Matchers::ResourceMatcher.new(:telegraf_perf_counters, :create, name)
+  end
 end

@@ -24,16 +24,20 @@ default['telegraf']['rubysource'] = 'https://rubygems.org'
 
 default['telegraf']['download_urls'] = {
   'debian' => 'https://dl.influxdata.com/telegraf/releases',
-  'rhel' => 'https://dl.influxdata.com/telegraf/releases'
+  'rhel' => 'https://dl.influxdata.com/telegraf/releases',
+  'windows' => 'https://dl.influxdata.com/telegraf/releases',
 }
 
 # platform_family keyed download sha256 checksums
 default['telegraf']['shasums'] = {
   'debian' => '',
-  'rhel' => ''
+  'rhel' => '',
+  'windows' => '',
 }
 
-default['telegraf']['config_file_path'] = '/etc/telegraf/telegraf.conf'
+# rubocop:disable LineLength
+default['telegraf']['config_file_path'] = platform_family?('windows') ? "#{ENV['ProgramW6432']}\\telegraf\\telegraf.conf" : '/etc/telegraf/telegraf.conf'
+# rubocop:enable LineLength
 
 default['telegraf']['config'] = {
   'tags' => {},
@@ -41,11 +45,13 @@ default['telegraf']['config'] = {
     'interval' => '10s',
     'round_interval' => true,
     'flush_interval' => '10s',
-    'flush_jitter' => '5s'
-  }
+    'flush_jitter' => '5s',
+  },
 }
 
 default['telegraf']['include_repository'] = true
+
+default['telegraf']['chocolatey_source'] = 'https://www.chocolatey.org/api/v2/'
 
 default['telegraf']['outputs'] = {}
 
@@ -53,12 +59,28 @@ default['telegraf']['inputs'] = {
   'cpu' => {
     'percpu' => true,
     'totalcpu' => true,
-    'drop' => ['cpu_time']
+    'drop' => ['cpu_time'],
   },
   'disk' => {},
   'io' => {},
   'mem' => {},
   'net' => {},
   'swap' => {},
-  'system' => {}
+  'system' => {},
+}
+
+default['telegraf']['perf_counters'] = {
+  'Processor' => {
+    'Instances' => ['*'],
+    'Counters' => [
+      '% Idle Time',
+      '% Interrupt Time',
+      '% Privileged Time',
+      '% User Time',
+      '% Processor Time',
+      '% DPC Time',
+    ],
+    'Measurement' => 'win_cpu',
+    'IncludeTotal' => true,
+  },
 }

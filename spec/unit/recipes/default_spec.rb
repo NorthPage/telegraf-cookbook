@@ -22,7 +22,8 @@ describe 'telegraf::default' do
   platforms = {
     'centos' => ['6.6', '7.0'],
     'ubuntu' => ['14.04', '15.04'],
-    'amazon' => ['2015.09']
+    'amazon' => ['2015.09'],
+    'windows' => ['2012r2'],
   }
 
   platforms.each do |platform, versions|
@@ -31,6 +32,10 @@ describe 'telegraf::default' do
         let(:chef_run) do
           ChefSpec::SoloRunner.new(log_level: :error, platform: platform, version: version) do
           end.converge(described_recipe)
+        end
+
+        it 'converges successfully' do
+          expect { chef_run }.to_not raise_error
         end
 
         it 'should create the default telegraf installation' do

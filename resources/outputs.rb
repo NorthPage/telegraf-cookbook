@@ -51,9 +51,11 @@ action :create do
 
   file "#{path}/#{name}_outputs.conf" do
     content TomlRB.dump('outputs' => outputs)
-    user 'root'
-    group 'telegraf'
-    mode new_resource.rootonly ? '0640' : '0644'
+    unless node.platform_family? 'windows'
+      user 'root'
+      group 'telegraf'
+      mode new_resource.rootonly ? '0640' : '0644'
+    end
     sensitive new_resource.rootonly
     notifies :restart, "service[telegraf_#{new_resource.service_name}]", :delayed if reload
   end

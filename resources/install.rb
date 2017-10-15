@@ -24,9 +24,8 @@ property :install_type, String, default: 'package'
 
 default_action :create
 
-# rubocop:disable Metrics/BlockLength
 action :create do
-  case install_type
+  case new_resource.install_type
   when 'package'
     if platform_family? 'rhel'
       yum_repository 'telegraf' do
@@ -40,11 +39,11 @@ action :create do
           baseurl 'https://repos.influxdata.com/centos/\$releasever/\$basearch/stable'
         end
         gpgkey 'https://repos.influxdata.com/influxdb.key'
-        only_if { include_repository }
+        only_if { new_resource.include_repository }
       end
     elsif node.platform_family? 'debian'
       package 'apt-transport-https' do
-        only_if { include_repository }
+        only_if { new_resource.include_repository }
       end
 
       apt_repository 'influxdb' do
@@ -53,21 +52,32 @@ action :create do
         components ['stable']
         arch 'amd64'
         key 'https://repos.influxdata.com/influxdb.key'
-        only_if { include_repository }
+        only_if { new_resource.include_repository }
       end
+    elsif node.platform_family? 'windows'
+      include_recipe 'chocolatey'
     else
       raise "I do not support your platform: #{node['platform_family']}"
     end
 
-    package 'telegraf' do
-      version install_version
+    if node.platform_family? 'windows'
+      chocolatey_package 'telegraf' do
+        version install_version
+        source node['telegraf']['chocolatey_source']
+        action :install
+      end
+    else
+      package 'telegraf' do
+        version install_version
+        action :install
+      end
     end
   when 'tarball'
     # TODO: implement me
     Chef::Log.warn('Sorry, installing from a tarball is not yet implemented.')
   when 'file'
     if node.platform_family? 'rhel'
-      file_name = "telegraf-#{install_version}.x86_64.rpm"
+      file_name = "telegraf-#{new_resource.install_version}.x86_64.rpm"
       remote_file "#{Chef::Config[:file_cache_path]}/#{file_name}" do
         source "#{node['telegraf']['download_urls']['rhel']}/#{file_name}"
         checksum node['telegraf']['shasums']['rhel']
@@ -80,7 +90,7 @@ action :create do
       end
     elsif node.platform_family? 'debian'
       # NOTE: file_name would be influxdb_<version> instead.
-      file_name = "telegraf_#{install_version}_amd64.deb"
+      file_name = "telegraf_#{new_resource.install_version}_amd64.deb"
       remote_file "#{Chef::Config[:file_cache_path]}/#{file_name}" do
         source "#{node['telegraf']['download_urls']['debian']}/#{file_name}"
         checksum node['telegraf']['shasums']['debian']
@@ -92,27 +102,79 @@ action :create do
         options '--force-confdef --force-confold'
         action :install
       end
+    elsif node.platform_family? 'windows'
+
+      service "telegraf_#{new_resource.name}" do
+        service_name 'telegraf'
+        action [:stop]
+        only_if { ::Win32::Service.exists?('telegraf') }
+      end
+
+      file_name = "telegraf-#{new_resource.install_version}_windows_amd64.zip"
+      remote_file "#{Chef::Config[:file_cache_path]}/#{file_name}" do
+        source "#{node['telegraf']['download_urls']['windows']}/#{file_name}"
+        checksum node['telegraf']['shasums']['windows']
+        action :create
+      end
+
+      windows_zipfile ENV['ProgramW6432'] do
+        source "#{Chef::Config[:file_cache_path]}/#{file_name}"
+        not_if { ::File.exist?("#{ENV['ProgramW6432']}\\telegraf\\telegraf.exe") }
+        action :unzip
+      end
+
+      directory "#{ENV['ProgramW6432']}\\telegraf\\telegraf.d" do
+        action :create
+      end
+
+      windows_package 'telegraf' do
+        source "#{ENV['ProgramW6432']}\\telegraf\\telegraf.exe"
+        # rubocop:disable Metrics/LineLength
+        options "--service install --config-directory \"#{ENV['ProgramW6432']}\\telegraf\\telegraf.d\""
+        # rubocop:enable Metrics/LineLength
+        installer_type :custom
+        action :install
+        only_if { !::Win32::Service.exists?('telegraf') }
+      end
     else
       raise "I do not support your platform: #{node['platform_family']}"
     end
   else
-    raise "#{install_type} is not a valid install type."
+    raise "#{new_resource.install_type} is not a valid install type."
   end
 
-  service "telegraf_#{name}" do
+  service "telegraf_#{new_resource.name}" do
     service_name 'telegraf'
     action [:enable, :start]
   end
 end
 
 action :delete do
-  service "telegraf_#{name}" do
+  service "telegraf_#{new_resource.name}" do
     service_name 'telegraf'
     action [:stop, :disable]
   end
 
-  package 'telegraf' do
-    action :remove
+  if node.platform_family? 'windows'
+    if new_resource.install_type == 'package'
+      chocolatey_package 'telegraf' do
+        action :remove
+      end
+    else
+      win_package 'telegraf' do
+        source "#{ENV['ProgramW6432']}\\telegraf\\telegraf.exe"
+        options '--service uninstall'
+        installer_type :custom
+        action :remove
+      end
+
+      directory "#{ENV['ProgramW6432']}\\telegraf" do
+        action :delete
+      end
+    end
+  else
+    package 'telegraf' do
+      action :remove
+    end
   end
 end
-# rubocop:enable Metrics/BlockLength

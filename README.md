@@ -12,6 +12,7 @@ cookbook.  ie. `[netstat]` requires `lsof`
 * CentOS 6.8 and 7.3
 * Ubuntu 15.04 and 16.04
 * Amazon Linux 
+* Windows 2012R2
 
 ## Requirements
 
@@ -32,16 +33,19 @@ as needed.  Alternatively, you can use the custom resources directly.
 | node['telegraf']['outputs']          | Array  | telegraf outputs                                      | ['influxdb' => {'urls' => ['http://localhost:8086'],'database' => 'telegraf','precision' => 's'}]                                                                   |
 | node['telegraf']['include_repository'] | [TrueClass, FalseClass] | Whether or not to pull in the InfluxDB repository to install from. | true |
 | node['telegraf']['inputs']           | Hash   | telegraf inputs                                       | {'cpu' => {'percpu' => true,'totalcpu' => true,'drop' => ['cpu_time'],},'disk' => {},'io' => {},'mem' => {},'net' => {},'swap' => {},'system' => {}}                |
+| node['telegraf']['perf_counters']           | Hash   | telegraf performance counters | {{  'Processor' => { 'Instances' => ['*'] 'Counters' => ['% Idle Time','% Interrupt Time','% Privileged Time','% User Time','% Processor Time','% DPC Time',],'Measurement' => 'win_cpu','IncludeTotal' => true}} |
+
 
 ### Custom Resources
 
 #### telegraf_install
 
-Installs telegraf and configures the service. Optionally specifies a version, otherwise the latest available is installed
+Installs telegraf and configures the service. Optionally specifies a version, otherwise the latest available is installed. The default installation type is package. For windows this defaults to chocolatey_package. If Chocolatey is not installed the resource will install this for you. Alternatively you can use the installation type file which will download and install the package.
 
 ```ruby
 telegraf_install 'default' do
   install_version '0.10.0-1'
+  install_type 'package'
   action :create
 end
 ```
@@ -56,6 +60,7 @@ telegraf_config 'default' do
   config node['telegraf']['config']
   outputs node['telegraf']['outputs']
   inputs node['telegraf']['inputs']
+  perf_counters node['telegraf']['perf_counters']  
 end
 ```
 
@@ -102,6 +107,47 @@ Note that there are three optional parameters for this resource that could've be
   - service_name [default: 'default'] if you need to override which service should be restarted when the config changes;
   - reload [default: true] whether to restart the service when the config changes;
   - rootonly [default: false] whether to restrict access to the config file so it's not world readable;
+
+#### telegraf_perf_counters
+
+Writes out telegraf performance counters configuration file for windows hosts only.
+
+```ruby
+telegraf_perf_counters 'default' do
+  perf_counters node['telegraf']['perf_counters']
+end
+```
+
+You can call this several times to create multiple performance counter config files. You'll need to specify different names for each telegraf_perf_counters resource, so they'll create separate config files.
+
+For example, to add a network interface performance counter:
+
+```ruby
+node.default['telegraf']['network_interface'] = {
+  'Network Interface' => {
+    'Instances' => ['*'],
+    'Counters' => [
+      "Bytes Received/sec",
+      "Bytes Sent/sec",
+      "Packets Received/sec",
+      "Packets Sent/sec",
+    ],
+    'Measurement' => 'win_net',
+  },
+}
+
+telegraf_perf_counters 'network_interface' do
+  perf_counters node['telegraf']['network_interface']
+  service_name 'default'
+  reload true
+end
+```
+
+For more examples visit [influxdata/telegraf/plugins/inputs/win_perf_counters](https://github.com/influxdata/telegraf/tree/master/plugins/inputs/win_perf_counters)
+
+Note that there are three optional parameters for this resource that could've been left out in this case:
+  - service_name [default: 'default'] if you need to override which service should be restarted when the config changes;
+  - reload [default: true] whether to restart the service when the config changes;
 
 ## License and Authors
 
