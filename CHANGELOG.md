@@ -68,3 +68,7 @@
 
 # 0.7.0
 - PR#48 - Removing default influxDB output
+
+# 0.8.0
+- PR#49 - Enumerate supported operating systems in metadata.rb
+- PR#50 - Feature/windows support
