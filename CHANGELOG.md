@@ -1,5 +1,6 @@
 # 0.8.1
 - PR#58 - Fixing :delete action for resource 'telegraf_outputs'
+- PR#60 - Reverse CHANGELOG.md order so the newest releases are at the top
 
 # 0.8.0
 - PR#49 - Enumerate supported operating systems in metadata.rb
