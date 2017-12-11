@@ -13,6 +13,7 @@ cookbook.  ie. `[netstat]` requires `lsof`
 * Ubuntu 15.04 and 16.04
 * Amazon Linux 
 * Windows 2012R2
+* Mac OSX 10.12.x and 10.13.x
 
 ## Requirements
 
