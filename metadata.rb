@@ -10,11 +10,12 @@ issues_url 'https://github.com/NorthPage/telegraf-cookbook/issues'
 
 chef_version '>= 12.5' if respond_to?(:chef_version)
 
-%w(centos ubuntu amazon windows).each do |os|
+%w(centos ubuntu amazon windows mac_os_x).each do |os|
   supports os
 end
 
-depends 'yum'
 depends 'apt'
-depends 'windows'
 depends 'chocolatey'
+depends 'homebrew'
+depends 'windows'
+depends 'yum'
