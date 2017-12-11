@@ -62,6 +62,13 @@ action :create do
 end
 
 action :delete do
+  service "telegraf_#{new_resource.service_name}" do
+    service_name 'telegraf'
+    retries 2
+    retry_delay 5
+    action :nothing
+  end
+
   file "#{path}/#{name}_outputs.conf" do
     action :delete
     notifies :restart, "service[telegraf_#{new_resource.service_name}]", :delayed if reload
