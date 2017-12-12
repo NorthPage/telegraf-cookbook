@@ -17,7 +17,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-property :name, String, name_property: true
+property :perf_counters_name, String, name_property: true
 property :perf_counters, Hash, required: true
 property :path, String,
          default: ::File.dirname(node['telegraf']['config_file_path']) + '/telegraf.d'
@@ -77,14 +77,14 @@ action :create do
   win_perf_counters = { win_perf_counters: [] }
   win_perf_counters[:win_perf_counters] << perf_counters_objects
 
-  file "#{path}/#{name}_perf_counters.conf" do
+  file "#{path}/#{new_resource.perf_counters_name}_perf_counters.conf" do
     content TomlRB.dump('inputs' => win_perf_counters)
     notifies :restart, "service[telegraf_#{new_resource.service_name}]", :delayed if reload
   end
 end
 
 action :delete do
-  file "#{path}/#{name}_perf_counters.conf" do
+  file "#{path}/#{new_resource.perf_counters_name}_perf_counters.conf" do
     action :delete
     notifies :restart, "service[telegraf_#{new_resource.service_name}]", :delayed if reload
   end

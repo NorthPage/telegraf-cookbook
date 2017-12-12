@@ -17,7 +17,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-property :name, String, name_property: true
+property :output_name, String, name_property: true
 property :outputs, Hash, required: true
 property :path, String,
          default: ::File.dirname(node['telegraf']['config_file_path']) + '/telegraf.d'
@@ -49,9 +49,9 @@ action :create do
     action :nothing
   end
 
-  file "#{path}/#{name}_outputs.conf" do
+  file "#{path}/#{new_resource.output_name}_outputs.conf" do
     content TomlRB.dump('outputs' => outputs)
-    unless node.platform_family? 'windows'
+    unless platform_family? 'windows'
       user 'root'
       group 'telegraf'
       mode new_resource.rootonly ? '0640' : '0644'
@@ -69,7 +69,7 @@ action :delete do
     action :nothing
   end
 
-  file "#{path}/#{name}_outputs.conf" do
+  file "#{path}/#{new_resource.output_name}_outputs.conf" do
     action :delete
     notifies :restart, "service[telegraf_#{new_resource.service_name}]", :delayed if reload
   end
