@@ -1,3 +1,7 @@
+# 0.9.0
+- PR#57 - Add Mac OS X install support
+- PR#59 - Parameterize InfluxDB Package Repo URL
+
 # 0.8.1
 - PR#58 - Fixing :delete action for resource 'telegraf_outputs'
 - PR#60 - Reverse CHANGELOG.md order so the newest releases are at the top
