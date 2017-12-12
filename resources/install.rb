@@ -32,13 +32,13 @@ action :create do
         description 'InfluxDB Repository - RHEL \$releasever'
         case node['platform']
         when 'redhat'
-          baseurl 'https://repos.influxdata.com/rhel/\$releasever/\$basearch/stable'
+          baseurl  "#{node['telegraf']['package_url']}/rhel/\$releasever/\$basearch/stable"
         when 'amazon'
-          baseurl 'https://repos.influxdata.com/centos/7/\$basearch/stable'
+          baseurl  "#{node['telegraf']['package_url']}/centos/7/\$basearch/stable"
         else
-          baseurl 'https://repos.influxdata.com/centos/\$releasever/\$basearch/stable'
+          baseurl  "#{node['telegraf']['package_url']}/centos/\$releasever/\$basearch/stable"
         end
-        gpgkey 'https://repos.influxdata.com/influxdb.key'
+        gpgkey  "#{node['telegraf']['package_url']}/influxdb.key"
         only_if { new_resource.include_repository }
       end
     elsif node.platform_family? 'debian'
@@ -47,11 +47,11 @@ action :create do
       end
 
       apt_repository 'influxdb' do
-        uri "https://repos.influxdata.com/#{node['platform']}"
+        uri "#{node['telegraf']['package_url']}/#{node['platform']}"
         distribution node['lsb']['codename']
         components ['stable']
         arch 'amd64'
-        key 'https://repos.influxdata.com/influxdb.key'
+        key "#{node['telegraf']['package_url']}/influxdb.key"
         only_if { new_resource.include_repository }
       end
     elsif node.platform_family? 'windows'
