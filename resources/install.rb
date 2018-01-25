@@ -27,7 +27,7 @@ default_action :create
 action :create do
   case new_resource.install_type
   when 'package'
-    if platform_family? 'rhel'
+    if platform_family?('rhel', 'amazon')
       yum_repository 'telegraf' do
         description 'InfluxDB Repository - RHEL \$releasever'
         case node['platform']
@@ -90,7 +90,7 @@ action :create do
     # TODO: implement me
     Chef::Log.warn('Sorry, installing from a tarball is not yet implemented.')
   when 'file'
-    if node.platform_family? 'rhel'
+    if node.platform_family?('rhel', 'amazon')
       file_name = "telegraf-#{new_resource.install_version}.x86_64.rpm"
       remote_file "#{Chef::Config[:file_cache_path]}/#{file_name}" do
         source "#{node['telegraf']['download_urls']['rhel']}/#{file_name}"
