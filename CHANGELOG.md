@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.2
+- PR#xx - Fix Chef-13 warning for https://docs.chef.io/deprecations_namespace_collisions.html
+- Cleanup all foodcritic warnings
+
 ## 0.9.1
 
 - PR#65 - Chef-13 amazon compatibility fix
