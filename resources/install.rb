@@ -45,11 +45,25 @@ action :create do
         only_if { new_resource.include_repository }
       end
 
+      case node['kernel']['machine']
+      when 'x86_64'
+        telegraf_arch = 'amd64'
+      when 'i686', 'i386'
+        telegraf_arch = 'i386'
+      when 'armv7l', 'armv6l'
+        telegraf_arch = 'armhf'
+      when 'armv5l'
+        telegraf_arch = 'armel'
+      else
+        telegraf_arch = 'amd64'
+        Chef::Log.warn('Arch not detected properly, falling back to amd64')
+      end
+
       apt_repository 'influxdb' do
         uri "#{node['telegraf']['package_url']}/#{node['platform']}"
         distribution node['lsb']['codename']
         components ['stable']
-        arch 'amd64'
+        arch telegraf_arch
         key "#{node['telegraf']['package_url']}/influxdb.key"
         only_if { new_resource.include_repository }
       end
