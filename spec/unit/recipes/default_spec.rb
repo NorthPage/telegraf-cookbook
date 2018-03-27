@@ -20,10 +20,11 @@ require 'spec_helper'
 
 describe 'telegraf::default' do
   platforms = {
-    'centos' => ['6.6', '7.0'],
-    'ubuntu' => ['14.04', '15.04'],
-    'amazon' => ['2015.09'],
-    'windows' => ['2012r2'],
+    'amazon' => ['2015.09', '2016.03', '2016.09', '2017.03', '2017.09'],
+    'centos' => ['6.8', '6.9', '7.3.1611', '7.4.1708'],
+    'mac_os_x' => ['10.12', '10.13'],
+    'ubuntu' => ['14.04', '16.04'],
+    'windows' => ['2012R2'],
   }
 
   platforms.each do |platform, versions|
