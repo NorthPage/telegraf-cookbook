@@ -1,7 +1,12 @@
 # Changelog
 
+## 0.10.0
+
+- PR#67 - Add support for non `amd64` architectures
+
 ## 0.9.2
-- PR#xx - Fix Chef-13 warning for https://docs.chef.io/deprecations_namespace_collisions.html
+
+- PR#66 - Fix Chef-13 warning for https://docs.chef.io/deprecations_namespace_collisions.html
 - Cleanup all foodcritic warnings
 
 ## 0.9.1
