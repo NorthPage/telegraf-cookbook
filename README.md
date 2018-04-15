@@ -1,5 +1,7 @@
 # telegraf
 
+[![Build Status](https://travis-ci.org/NorthPage/telegraf-cookbook.svg?branch=master)](https://travis-ci.org/NorthPage/telegraf-cookbook)
+
 Cookbook to install and configure [telegraf](https://github.com/influxdb/telegraf)
 
 This was influenced by [SimpleFinanace/chef-influxdb](https://github.com/SimpleFinance/chef-influxdb)

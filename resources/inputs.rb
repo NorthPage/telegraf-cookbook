@@ -20,8 +20,8 @@
 property :inputs, Hash, required: true
 property :path, String, default: ::File.dirname(node['telegraf']['config_file_path']) + '/telegraf.d'
 property :service_name, String, default: 'default'
-property :reload, kind_of: [TrueClass, FalseClass], default: true
-property :rootonly, kind_of: [TrueClass, FalseClass], default: false
+property :reload, [true, false], default: true
+property :rootonly, [true, false], default: false
 
 default_action :create
 

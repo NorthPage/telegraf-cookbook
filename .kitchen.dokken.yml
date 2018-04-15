@@ -1,0 +1,76 @@
+---
+driver:
+  name: dokken
+  chef_version: latest
+  privileged: true
+  volumes: [
+    '/var/lib/docker', '/var/lib/docker-one', '/var/lib/docker-two'
+  ]
+
+transport:
+  name: dokken
+
+provisioner:
+  name: dokken
+  deprecations_as_errors: true
+
+verifier:
+  name: inspec
+
+platforms:
+- name: debian-9
+  driver:
+    image: dokken/debian-9
+    pid_one_command: /bin/systemd
+
+- name: centos-6
+  driver:
+    image: dokken/centos-6
+    pid_one_command: /sbin/init
+
+- name: centos-7
+  driver:
+    image: dokken/centos-7
+    pid_one_command: /usr/lib/systemd/systemd
+
+- name: ubuntu-14.04
+  driver:
+    image: dokken/ubuntu-14.04
+    pid_one_command: /sbin/init
+
+- name: ubuntu-16.04
+  driver:
+    image: dokken/ubuntu-16.04
+    pid_one_command: /bin/systemd
+
+- name: amazonlinux
+  driver:
+    image: dokken/amazonlinux
+    pid_one_command: /sbin/init
+
+suites:
+  - name: default
+    run_list:
+      - recipe[telegraf::default]
+    attributes:
+      telegraf:
+        outputs:
+          influxdb:
+            urls: ['http://localhost:8086']
+            database: 'telegraf'
+            precision: 's'
+  - name: file
+    run_list:
+      - recipe[telegraf::default]
+    attributes:
+      telegraf:
+        install_type: file
+        version: 1.4.1-1
+        shasums: 
+          debian: f70ca532511a92e590eaf129ee816dd7cd8c0f7eeb62b41e1b8c8623334d6a8d
+          rhel: 76ae1248890b399c5964d254fc763587b60059ab45081e73d7cad805fa97615b
+        outputs:
+          influxdb:
+            urls: ['http://localhost:8086']
+            database: 'telegraf'
+            precision: 's'

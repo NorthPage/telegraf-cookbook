@@ -20,7 +20,7 @@
 property :perf_counters, Hash, required: true
 property :path, String, default: ::File.dirname(node['telegraf']['config_file_path']) + '/telegraf.d'
 property :service_name, String, default: 'default'
-property :reload, kind_of: [TrueClass, FalseClass], default: true
+property :reload, [true, false], default: true
 
 default_action :create
 
