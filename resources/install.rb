@@ -91,6 +91,7 @@ action :create do
       chocolatey_package 'telegraf' do
         version new_resource.install_version
         source node['telegraf']['chocolatey_source']
+        options node['telegraf']['chocolatey_options'] unless node['telegraf']['chocolatey_options'] == ''
         action :install
       end
     else
