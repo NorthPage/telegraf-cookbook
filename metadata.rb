@@ -15,7 +15,7 @@ chef_version '>= 12.5' if respond_to?(:chef_version)
 end
 
 depends 'apt'
-recommends 'chocolatey'
-recommends 'homebrew'
+depends 'chocolatey'
+depends 'homebrew'
 depends 'windows'
 depends 'yum'
