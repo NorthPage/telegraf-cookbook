@@ -1,0 +1,48 @@
+---
+driver:
+  name: proxy
+  host: localhost
+  port: 5985
+  reset_command: "exit 0"
+  username: <%= ENV["machine_user"] %>
+  password: <%= ENV["machine_pass"] %>
+
+provisioner:
+  name: chef_zero
+
+verifier:
+  name: inspec
+
+platforms:
+- name: windows-2012R2
+  driver_config:
+    box: tas50/windows_2012r2
+- name: windows-2016
+  driver_config:
+    box: tas50/windows_2016
+
+suites:
+  - name: default
+    run_list:
+      - recipe[telegraf::default]
+    attributes:
+      telegraf:
+        outputs:
+          influxdb:
+            urls: ['http://localhost:8086']
+            database: 'telegraf'
+            precision: 's'
+  - name: file
+    run_list:
+      - recipe[telegraf::default]
+    attributes:
+      telegraf:
+        install_type: file
+        version: 1.4.1
+        shasums:
+          windows: '1cad74edb888bd7a3cde9461b7f0b4210942e967d3cdb3f416ce589e3c755080'
+        outputs:
+          influxdb:
+            urls: ['http://localhost:8086']
+            database: 'telegraf'
+            precision: 's'

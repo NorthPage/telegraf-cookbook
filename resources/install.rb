@@ -24,6 +24,8 @@ property :install_type, String, default: 'package'
 default_action :create
 
 action :create do
+  @telegraf_version = new_resource.install_version
+
   case new_resource.install_type
   when 'package'
     if platform_family?('rhel', 'amazon')
@@ -104,6 +106,7 @@ action :create do
     # TODO: implement me
     Chef::Log.warn('Sorry, installing from a tarball is not yet implemented.')
   when 'file'
+
     if platform_family?('rhel', 'amazon')
       file_name = "telegraf-#{new_resource.install_version}.x86_64.rpm"
       remote_file "#{Chef::Config[:file_cache_path]}/#{file_name}" do
@@ -131,6 +134,8 @@ action :create do
         action :install
       end
     elsif platform_family? 'windows'
+
+      return unless telegraf_install?
 
       service "telegraf_#{new_resource.name}" do
         service_name 'telegraf'
@@ -171,14 +176,15 @@ action :create do
 
   service "telegraf_#{new_resource.name}" do
     service_name 'telegraf'
-    action [:enable, :start]
+    action :enable
+    delayed_action :start
   end
 end
 
 action :delete do
   service "telegraf_#{new_resource.name}" do
     service_name 'telegraf'
-    action [:stop, :disable]
+    action %i(stop disable)
   end
 
   if platform_family? 'windows'
@@ -203,4 +209,8 @@ action :delete do
       action :remove
     end
   end
+end
+
+action_class do
+  include Telegraf::Helpers
 end
