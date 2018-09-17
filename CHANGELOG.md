@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.12.0
+
+PR#76 - Remove deprecated `recommends`
+PR#77 - Add force option for debian to allow upgrades
+PR#79 - Make `telegraf_install` idempotent
+
 ## 0.11.0
 
 PR#68 - CI tests/linter fixes
