@@ -8,9 +8,9 @@
         <array>
             <string>/usr/local/bin/telegraf</string>
             <string>--config</string>
-            <string>/etc/telegraf/telegraf.conf</string>
+            <string><%= node['telegraf']['config_file_path'] %></string>
             <string>--config-directory</string>
-            <string>/etc/telegraf/telegraf.d/</string>
+            <string><%= ::File.dirname(node['telegraf']['config_file_path']) + '/telegraf.d/'%></string>
         </array>
         <key>KeepAlive</key>
         <true/>

@@ -78,9 +78,9 @@ action :create do
         action :create
       end
 
-      cookbook_file '/Library/LaunchDaemons/com.influxdata.telegraf.plist' do
+      template '/Library/LaunchDaemons/com.influxdata.telegraf.plist' do
         action :create
-        content 'com.influxdata.telegraf.plist'
+        source 'com.influxdata.telegraf.plist.erb'
         cookbook 'telegraf'
       end
 
