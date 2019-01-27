@@ -1,5 +1,9 @@
 # Changelog
 
+## [Unreleased]
+
+PR#81 - Respect config file path attribute on MacOS
+
 ## 0.12.0
 
 PR#76 - Remove deprecated `recommends`
